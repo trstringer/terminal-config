@@ -419,6 +419,9 @@ vim.o.wrap = false
 vim.o.relativenumber = true
 vim.o.wildignore = '*/venv/*,*.pyc'
 
+vim.o.foldmethod = "expr"
+vim.o.foldexpr = "nvim_treesitter#foldexpr()"
+
 -- [[ Basic Keymaps ]]
 
 -- Keymaps for better default experience
