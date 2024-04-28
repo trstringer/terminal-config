@@ -418,6 +418,7 @@ vim.o.splitbelow = true
 vim.o.wrap = false
 vim.o.relativenumber = true
 vim.o.wildignore = '*/venv/*,*.pyc'
+vim.o.foldlevel = 99
 
 vim.o.foldmethod = "expr"
 vim.o.foldexpr = "nvim_treesitter#foldexpr()"
