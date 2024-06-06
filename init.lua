@@ -1,42 +1,10 @@
---[[
-
-=====================================================================
-==================== READ THIS BEFORE CONTINUING ====================
-=====================================================================
-
-Kickstart.nvim is *not* a distribution.
-
-Kickstart.nvim is a template for your own configuration.
-  The goal is that you can read every line of code, top-to-bottom, understand
-  what your configuration is doing, and modify it to suit your needs.
-
-  Once you've done that, you should start exploring, configuring and tinkering to
-  explore Neovim!
-
-  If you don't know anything about Lua, I recommend taking some time to read through
-  a guide. One possible example:
-  - https://learnxinyminutes.com/docs/lua/
-
-
-  And then you can explore or search through `:help lua-guide`
-  - https://neovim.io/doc/user/lua-guide.html
-
-
-Kickstart Guide:
-
-I have left several `:help X` comments throughout the init.lua
-You should run that command and read that help section for more information.
-
-In addition, I have some `NOTE:` items throughout the file.
-These are for you, the reader to help understand what is happening. Feel free to delete
-them once you know what you're doing, but they should serve as a guide for when you
-are first encountering a few different constructs in your nvim config.
-
-I hope you enjoy your Neovim journey,
-- TJ
-
-P.S. You can delete this when you're done too. It's your config now :)
---]]
+-- [[ NavigationIndex ]]
+--
+-- [[ CustomOptions ]]
+-- [[ PluginsConfig ]]
+-- [[ LspConfig ]]
+-- [[ BasicKeymaps ]]
+-- [[ ConfigureLSP ]]
 
 -- Set <space> as the leader key
 -- See `:help mapleader`
@@ -60,12 +28,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- [[ Configure plugins ]]
--- NOTE: Here is where you install your plugins.
---  You can configure plugins using the `config` key.
---
---  You can also configure plugins after the setup call,
---    as they will be available in your neovim runtime.
+-- [[ PluginsConfig ]]
 require('lazy').setup({
   -- NOTE: First, some plugins that don't require any configuration
 
@@ -88,17 +51,18 @@ require('lazy').setup({
 
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim', opts = {} },
+      { 'j-hui/fidget.nvim',       opts = {} },
 
       -- Additional lua configuration, makes nvim stuff amazing!
       'folke/neodev.nvim',
     },
-    config = function ()
+    config = function()
       util = require "lspconfig/util"
 
       local capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
       capabilities.textDocument.completion.completionItem.snippetSupport = true
 
+      -- [[ LspConfig ]]
       require("lspconfig").gopls.setup({
         capabilities = capabilities,
         flags = { debounce_text_changes = 200 },
@@ -171,7 +135,7 @@ require('lazy').setup({
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim', opts = {} },
+  { 'folke/which-key.nvim',  opts = {} },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -335,17 +299,17 @@ require('lazy').setup({
       "TmuxNavigatePrevious",
     },
     keys = {
-      { "<c-h>", "<cmd><C-U>TmuxNavigateLeft<cr>" },
-      { "<c-j>", "<cmd><C-U>TmuxNavigateDown<cr>" },
-      { "<c-k>", "<cmd><C-U>TmuxNavigateUp<cr>" },
-      { "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
+      { "<c-h>",  "<cmd><C-U>TmuxNavigateLeft<cr>" },
+      { "<c-j>",  "<cmd><C-U>TmuxNavigateDown<cr>" },
+      { "<c-k>",  "<cmd><C-U>TmuxNavigateUp<cr>" },
+      { "<c-l>",  "<cmd><C-U>TmuxNavigateRight<cr>" },
       { "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
     },
   },
 
   {
     "fatih/vim-go",
-    config = function ()
+    config = function()
       -- we disable most of these features because treesitter and nvim-lsp
       -- take care of it
       vim.g['go_gopls_enabled'] = 0
@@ -358,6 +322,15 @@ require('lazy').setup({
       vim.g['go_textobj_enabled'] = 0
       vim.g['go_list_type'] = 'quickfix'
     end,
+  },
+
+  {
+    dir = "~/dev/psql.nvim",
+    name = "psql.nvim"
+  },
+
+  {
+    "elentok/format-on-save.nvim",
   },
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
@@ -375,15 +348,15 @@ require('lazy').setup({
   -- { import = 'custom.plugins' },
 }, {})
 
--- [[ Setting options ]]
+-- [[ CustomOptions ]]
 -- See `:help vim.o`
--- NOTE: You can change these options as you wish!
 
 -- Set highlight on search
 vim.o.hlsearch = false
 
--- Make line numbers default
+-- Make line numbers default and set relative line numbers
 vim.wo.number = true
+vim.o.relativenumber = true
 
 -- Enable mouse mode
 vim.o.mouse = 'a'
@@ -391,7 +364,7 @@ vim.o.mouse = 'a'
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
-vim.o.clipboard = 'unnamedplus'
+-- vim.o.clipboard = 'unnamedplus'
 
 -- Enable break indent
 vim.o.breakindent = true
@@ -412,18 +385,25 @@ vim.o.completeopt = 'menuone,noselect'
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
 
--- My custom options.
+-- Split the preferred directions (right and below)
 vim.o.splitright = true
 vim.o.splitbelow = true
-vim.o.wrap = false
-vim.o.relativenumber = true
-vim.o.wildignore = '*/venv/*,*.pyc'
-vim.o.foldlevel = 99
 
+-- Do not wrap lines
+vim.o.wrap = false
+
+-- Ignore certain files and dirs
+vim.o.wildignore = '*/venv/*,*.pyc,*/dist/*'
+
+-- Folding config
+vim.o.foldlevel = 99
 vim.o.foldmethod = "expr"
 vim.o.foldexpr = "nvim_treesitter#foldexpr()"
 
--- [[ Basic Keymaps ]]
+-- Don't expand tab completion
+vim.o.wildmode = "full:longest"
+
+-- [[ BasicKeymaps ]]
 
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
@@ -440,6 +420,20 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open float
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
 vim.keymap.set('i', 'jj', '<esc>', { desc = 'Switch from insert to normal mode' })
+
+vim.keymap.set(
+  'n',
+  '<leader>x',
+  require("psql").psql_run_curr_buf,
+  { desc = 'Execute the current buffer with psql' }
+)
+
+vim.keymap.set(
+  'x',
+  '<leader>x',
+  '<ESC><CMD>lua require("psql").psql_run_visual()<CR>',
+  { desc = 'Execute selection with psql' }
+)
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -607,7 +601,7 @@ vim.defer_fn(function()
   }
 end, 0)
 
--- [[ Configure LSP ]]
+-- [[ ConfigureLSP ]]
 --  This function gets run when an LSP connects to a particular buffer.
 local on_attach = function(_, bufnr)
   -- NOTE: Remember that lua is a real programming language, and as such it is possible
@@ -689,6 +683,7 @@ local servers = {
   -- clangd = {},
   gopls = {},
   pyright = {},
+  -- ruff_lsp = {},
   -- rust_analyzer = {},
   -- tsserver = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
@@ -780,6 +775,19 @@ cmp.setup {
   },
 }
 
+local format_on_save = require("format-on-save")
+local formatters = require("format-on-save.formatters")
+format_on_save.setup({
+  formatter_by_ft = {
+    python = formatters.shell({
+      cmd = { "ruff", "format", "-s", "-" },
+    }),
+    lua = formatters.lsp,
+    markdown = formatters.prettierd,
+  },
+  run_with_sh = false,
+})
+
 -- Thanks to Fatih Arslan for Go specific config: https://github.com/fatih/dotfiles/tree/52911c2dc72f70700a0e509ef7558bf15816ea8c
 -- Go uses gofmt, which uses tabs for indentation and spaces for aligment.
 -- Hence override our indentation rules.
@@ -806,7 +814,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
         end
       end
     end
-  
+
     vim.lsp.buf.format()
   end
 })
