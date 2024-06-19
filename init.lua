@@ -879,7 +879,16 @@ vim.api.nvim_create_autocmd("VimLeavePre", {
   pattern = "*",
   callback = function()
     if vim.g.savesession then
-      vim.api.nvim_command("mks!")
+      for _, k in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.fn.getbufinfo(k)[1].hidden == 1 then
+          vim.api.nvim_buf_delete(k, {})
+        end
+      end
+      local session_file = "Session.vim"
+      if vim.g.sessionfile ~= "" then
+        session_file = vim.g.sessionfile
+      end
+      vim.api.nvim_command(string.format("mks! %s", session_file))
     end
   end
 })
