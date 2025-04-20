@@ -366,6 +366,15 @@ require('lazy').setup({
     "elentok/format-on-save.nvim",
   },
 
+  {
+    "zapling/mason-lock.nvim",
+    init = function()
+      require("mason-lock").setup({
+        lockfile_path = vim.fn.stdpath("config") .. "/mason-lock.json" -- (default)
+      })
+    end
+  },
+
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
@@ -462,19 +471,44 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 
 vim.keymap.set('i', 'jj', '<esc>', { desc = 'Switch from insert to normal mode' })
 
-vim.keymap.set(
-  'n',
-  '<leader>x',
-  require("psql").psql_run_curr_buf,
-  { desc = 'Execute the current buffer with psql' }
+local fc_group = vim.api.nvim_create_augroup("filecommand_group", { clear = true })
+vim.api.nvim_create_autocmd(
+  "FileType",
+  {
+    pattern = { "sql" },
+    callback = function()
+      vim.api.nvim_buf_set_keymap(
+        0,
+        'n',
+        '<leader>x',
+        '<cmd>require("psql").psql_run_curr_buf()<CR>',
+        { desc = 'Execute the current buffer with psql' }
+      )
+
+      vim.api.nvim_buf_set_keymap(
+        0,
+        'x',
+        '<leader>x',
+        '<ESC><CMD>lua require("psql").psql_run_visual()<CR>',
+        { desc = 'Execute selection with psql' }
+      )
+    end,
+    group = fc_group
+  }
+)
+vim.api.nvim_create_autocmd(
+  "FileType",
+  {
+    pattern = { "lua" },
+    callback = function()
+      vim.api.nvim_buf_set_keymap(0, "n", "<space><space>x", "<cmd>source %<CR>", { desc = "Lua stuff" })
+      vim.api.nvim_buf_set_keymap(0, "n", "<space>x", ":.lua<CR>", { desc = "Lua stuff" })
+      vim.api.nvim_buf_set_keymap(0, "v", "<space>x", ":lua<CR>", { desc = "Lua stuff" })
+    end,
+    group = fc_group
+  }
 )
 
-vim.keymap.set(
-  'x',
-  '<leader>x',
-  '<ESC><CMD>lua require("psql").psql_run_visual()<CR>',
-  { desc = 'Execute selection with psql' }
-)
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -560,6 +594,7 @@ vim.keymap.set('n', '<leader>s/', telescope_live_grep_open_files, { desc = '[S]e
 vim.keymap.set('n', '<leader>ss', require('telescope.builtin').builtin, { desc = '[S]earch [S]elect Telescope' })
 vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
 vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
+vim.keymap.set('n', '<leader>sk', require('telescope.builtin').keymaps, { desc = '[S]earch [K]eymaps' })
 vim.keymap.set('n', '<C-]>', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })

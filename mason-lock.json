@@ -1,0 +1,5 @@
+{
+  "gopls": "v0.17.1",
+  "lua-language-server": "3.13.5",
+  "pyright": "1.1.392"
+}
