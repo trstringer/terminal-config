@@ -1,6 +1,3 @@
-# Alias vim to nvim and do the following:
-#   - Git branch aware session saving
-#   - Python virtual environment activation
 vim () {
     if [[ -d "venv" ]]; then
 	IS_VENV=1
