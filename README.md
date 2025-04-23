@@ -35,4 +35,10 @@ fi
 
 # Restore tmux
 cp ./.tmux.conf ~
+
+# Restore terminal themes
+cp ~/.local/share/nvim/lazy/tokyonight.nvim/extras/xfceterm/*.theme ~/.local/share/xfce4/terminal/colorschemes/
+
+# Restore xfce4-terminal settings
+cp ./xfce4-terminal.xml ~/.config/xfce4/xfconf/xfce-perchannel-xml/
 ```
