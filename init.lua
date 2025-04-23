@@ -1,8 +1,8 @@
 -- [[ NavigationIndex ]]
 --
--- [[ CustomOptions ]]
 -- [[ PluginsConfig ]]
 -- [[ LspConfig ]]
+-- [[ CustomOptions ]]
 -- [[ BasicKeymaps ]]
 -- [[ ConfigureLSP ]]
 -- [[ AutoCmd ]]
@@ -191,69 +191,11 @@ require('lazy').setup({
     },
   },
 
-  -- {
-  --   -- Theme inspired by Atom
-  --   'navarasu/onedark.nvim',
-  --   priority = 1000,
-  --   lazy = false,
-  --   config = function()
-  --     require('onedark').setup {
-  --       -- Set a style preset. 'dark' is default.
-  --       style = 'dark', -- dark, darker, cool, deep, warm, warmer, light
-  --     }
-  --     require('onedark').load()
-  --   end,
-  -- },
   {
-    'maxmx03/dracula.nvim',
+    "folke/tokyonight.nvim",
     lazy = false,
     priority = 1000,
-    config = function()
-      ---@type dracula
-      local dracula = require "dracula"
-
-      dracula.setup({
-        transparent = false,
-        on_colors = function(colors, color)
-          ---@type dracula.palette
-          return {
-            -- override or create new colors
-            mycolor = "#ffffff",
-          }
-        end,
-        on_highlights = function(colors, color)
-          ---@type dracula.highlights
-          return {
-            ---@type vim.api.keyset.highlight
-            Normal = { fg = colors.mycolor }
-          }
-        end,
-        plugins = {
-          ["nvim-treesitter"] = true,
-          ["nvim-lspconfig"] = true,
-          ["nvim-navic"] = true,
-          ["nvim-cmp"] = true,
-          ["indent-blankline.nvim"] = true,
-          ["neo-tree.nvim"] = true,
-          ["nvim-tree.lua"] = true,
-          ["which-key.nvim"] = true,
-          ["dashboard-nvim"] = true,
-          ["gitsigns.nvim"] = true,
-          ["neogit"] = true,
-          ["todo-comments.nvim"] = true,
-          ["lazy.nvim"] = true,
-          ["telescope.nvim"] = true,
-          ["noice.nvim"] = true,
-          ["hop.nvim"] = true,
-          ["mini.statusline"] = true,
-          ["mini.tabline"] = true,
-          ["mini.starter"] = true,
-          ["mini.cursorword"] = true,
-        }
-      })
-      vim.cmd.colorscheme 'dracula'
-      vim.cmd.colorscheme 'dracula-soft'
-    end
+    opts = {},
   },
 
   { -- Collection of various small independent plugins/modules
@@ -282,16 +224,25 @@ require('lazy').setup({
       -- statusline.setup { use_icons = vim.g.have_nerd_font }
       statusline.setup { use_icons = true }
 
-      -- You can configure sections in the statusline by overriding their
-      -- default behavior. For example, here we set the section for
-      -- cursor location to LINE:COLUMN
-      ---@diagnostic disable-next-line: duplicate-set-field
-      statusline.section_location = function()
-        return '%2l:%-2v'
-      end
+      local mode, mode_hl = statusline.section_mode({ trunc_width = 120 })
+      local git           = statusline.section_git({ trunc_width = 40 })
+      local diff          = statusline.section_diff({ trunc_width = 75 })
+      local diagnostics   = statusline.section_diagnostics({ trunc_width = 75 })
+      local lsp           = statusline.section_lsp({ trunc_width = 75 })
+      local filename      = statusline.section_filename({ trunc_width = 140 })
+      local fileinfo      = statusline.section_fileinfo({ trunc_width = 120 })
+      local location      = statusline.section_location({ trunc_width = 75 })
+      local search        = statusline.section_searchcount({ trunc_width = 75 })
 
-      -- ... and there is more!
-      --  Check out: https://github.com/echasnovski/mini.nvim
+      statusline.combine_groups({
+        { hl = mode_hl,                 strings = { mode } },
+        { hl = 'MiniStatuslineDevinfo', strings = { git, diff, diagnostics, lsp } },
+        '%<', -- Mark general truncate point
+        { hl = 'MiniStatuslineFilename', strings = { filename } },
+        '%=', -- End left alignment
+        { hl = 'MiniStatuslineFileinfo', strings = { fileinfo } },
+        { hl = mode_hl,                  strings = { search, location } },
+      })
     end,
   },
 
@@ -397,7 +348,12 @@ require('lazy').setup({
       -- your configuration comes here
       -- or leave it empty to use the default settings
       -- refer to the configuration section below
-    }
+    },
+  },
+
+  {
+    'nvim-tree/nvim-web-devicons',
+    enabled = vim.g.have_nerd_font
   },
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
@@ -417,6 +373,9 @@ require('lazy').setup({
 
 -- [[ CustomOptions ]]
 -- See `:help vim.o`
+
+-- Theme
+vim.cmd [[colorscheme tokyonight-night]]
 
 -- Set highlight on search
 vim.o.hlsearch = false
