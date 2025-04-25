@@ -20,11 +20,14 @@
   <property name="misc-show-unsafe-paste-dialog" type="bool" value="false"/>
   <property name="scrolling-bar" type="string" value="TERMINAL_SCROLLBAR_NONE"/>
   <property name="title-mode" type="string" value="TERMINAL_TITLE_APPEND"/>
-  <property name="font-name" type="string" value="Liga SFMono Nerd Font 15"/>
+  <property name="font-name" type="string" value="JetBrainsMono Nerd Font Mono 15"/>
   <property name="misc-menubar-default" type="bool" value="false"/>
   <property name="misc-default-geometry" type="string" value="90x30"/>
   <property name="misc-toolbar-default" type="bool" value="false"/>
   <property name="font-use-system" type="bool" value="false"/>
   <property name="misc-mouse-autohide" type="bool" value="true"/>
-  <property name="encoding" type="string" value="ISO-8859-2"/>
+  <property name="encoding" type="string" value=""/>
+  <property name="binding-backspace" type="string" value="TERMINAL_ERASE_BINDING_AUTO"/>
+  <property name="binding-delete" type="string" value="TERMINAL_ERASE_BINDING_AUTO"/>
+  <property name="binding-ambiguous-width" type="string" value="TERMINAL_AMBIGUOUS_WIDTH_BINDING_NARROW"/>
 </channel>

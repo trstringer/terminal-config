@@ -1,4 +1,4 @@
-# Neovim (and tmux) config
+# Terminal config backup and restore
 
 ## Backup
 
@@ -10,35 +10,73 @@ git commit -m "New neovim config"
 
 ## Restore
 
+### Terminal
+
+Restore the xfce4-terminal config:
+
 ```bash
-# Install neovim release that matches the version.
+cp ./xfce4-terminal.xml ~/.config/xfce4/xfconf/xfce-perchannel-xml/
+```
 
-# Restore Lazy plugins.
+Restore terminal themes. This needs to be done _after_ Neovim restore because it relies on themes delivered by a nvim plugin:
+
+```bash
+cp ~/.local/share/nvim/lazy/tokyonight.nvim/extras/xfceterm/*.theme ~/.local/share/xfce4/terminal/colorschemes/
+```
+
+After the themes are restored, there is no action. They are just presets, but the terminal config already has the preset colors correctly set. Restoring those above themes are just for future changes to have access to theme presets.
+
+### tmux
+
+Restore tmux config:
+
+```bash
+cp ./.tmux.conf ~
+```
+
+Open tmux and install addons with `<C-b>+I`. To update addons run `<C-b>+u`.
+
+### Neovim
+
+Install the Neovim release that matches the version in `./nvim_version`. This can just be downloaded from the [nvim GitHub releases](https://github.com/neovim/neovim/releases).
+
+Copy nvim config:
+
+```bash
+cp ./init.lua ~/.config/nvim/
+```
+
+Restore Lazy plugins:
+
+```bash
 cp ./lazy-lock.json ~/.config/nvim/
-nvim
-# :Lazy restore
+```
 
-# Restore Mason LSPs.
+Once copied, open nvim and run `:Lazy restore`.
+
+Restore Mason LSPs:
+
+```bash
 cp ./mason-lock.json ~/.config/nvim/
-nvim
-# :MasonLockRestore
+```
 
+Once copied, open nvim and run `:MasonLockRestore`.
+
+Restore editorconfig:
+
+```bash
 # Restore editorconfig
 cp ./.editorconfig ~
+```
 
-# Restore vim helpers
+Restore helpers:
+
+```bash
 cp ./.vim_helpers.sh ~
-# Source it in bashrc
-if ! grep vim_helpers ~/.bashrc ; then
-    echo "source /home/trstringer/.vim_helpers.sh" >> ~/.bashrc
-fi
+```
 
-# Restore tmux
-cp ./.tmux.conf ~
+After helpers are restored, ensure that they are sourced in `~/.bashrc`:
 
-# Restore terminal themes
-cp ~/.local/share/nvim/lazy/tokyonight.nvim/extras/xfceterm/*.theme ~/.local/share/xfce4/terminal/colorschemes/
-
-# Restore xfce4-terminal settings
-cp ./xfce4-terminal.xml ~/.config/xfce4/xfconf/xfce-perchannel-xml/
+```bash
+source /home/trstringer/.vim_helpers.sh
 ```
