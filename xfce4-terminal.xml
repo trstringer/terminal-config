@@ -20,7 +20,7 @@
   <property name="misc-show-unsafe-paste-dialog" type="bool" value="false"/>
   <property name="scrolling-bar" type="string" value="TERMINAL_SCROLLBAR_NONE"/>
   <property name="title-mode" type="string" value="TERMINAL_TITLE_APPEND"/>
-  <property name="font-name" type="string" value="JetBrainsMono Nerd Font Mono 15"/>
+  <property name="font-name" type="string" value="Hack Nerd Font Mono 15"/>
   <property name="misc-menubar-default" type="bool" value="false"/>
   <property name="misc-default-geometry" type="string" value="90x30"/>
   <property name="misc-toolbar-default" type="bool" value="false"/>

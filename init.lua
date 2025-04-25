@@ -498,9 +498,9 @@ vim.api.nvim_create_autocmd(
   {
     pattern = { "lua" },
     callback = function()
-      vim.api.nvim_buf_set_keymap(0, "n", "<space><space>x", "<cmd>source %<CR>", { desc = "Lua stuff" })
-      vim.api.nvim_buf_set_keymap(0, "n", "<space>x", ":.lua<CR>", { desc = "Lua stuff" })
-      vim.api.nvim_buf_set_keymap(0, "v", "<space>x", ":lua<CR>", { desc = "Lua stuff" })
+      vim.api.nvim_buf_set_keymap(0, "n", "<space><space>x", "<cmd>source %<CR>", { desc = "Lua source file" })
+      vim.api.nvim_buf_set_keymap(0, "n", "<space>x", ":.lua<CR>", { desc = "Lua run current line" })
+      vim.api.nvim_buf_set_keymap(0, "v", "<space>x", ":lua<CR>", { desc = "Lua run selection" })
     end,
     group = fc_group
   }
