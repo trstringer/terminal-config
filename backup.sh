@@ -4,6 +4,7 @@ echo "Backing up Neovim"
 set -ex
 
 nvim --version > nvim_version
+cp ~/.editorconfig .
 cp ~/.config/nvim/init.lua .
 cp ~/.tmux.conf .
 cp ~/.vim_helpers.sh .
