@@ -12,13 +12,15 @@ git commit -m "New neovim config"
 
 ### Terminal
 
-Restore the xfce4-terminal config:
+#### Config
 
 ```bash
 cp ./xfce4-terminal.xml ~/.config/xfce4/xfconf/xfce-perchannel-xml/
 ```
 
-Restore terminal themes. This needs to be done _after_ Neovim restore because it relies on themes delivered by a nvim plugin:
+#### Themes
+
+This needs to be done _after_ Neovim restore because it relies on themes delivered by a nvim plugin:
 
 ```bash
 cp ~/.local/share/nvim/lazy/tokyonight.nvim/extras/xfceterm/*.theme ~/.local/share/xfce4/terminal/colorschemes/
@@ -40,13 +42,13 @@ Open tmux and install addons with `<C-b>+I`. To update addons run `<C-b>+u`.
 
 Install the Neovim release that matches the version in `./nvim_version`. This can just be downloaded from the [nvim GitHub releases](https://github.com/neovim/neovim/releases).
 
-Copy nvim config:
+#### Config
 
 ```bash
 cp ./init.lua ~/.config/nvim/
 ```
 
-Restore Lazy plugins:
+#### Lazy plugins
 
 ```bash
 cp ./lazy-lock.json ~/.config/nvim/
@@ -54,7 +56,7 @@ cp ./lazy-lock.json ~/.config/nvim/
 
 Once copied, open nvim and run `:Lazy restore`.
 
-Restore Mason LSPs:
+#### Mason LSPs
 
 ```bash
 cp ./mason-lock.json ~/.config/nvim/
@@ -62,14 +64,14 @@ cp ./mason-lock.json ~/.config/nvim/
 
 Once copied, open nvim and run `:MasonLockRestore`.
 
-Restore editorconfig:
+#### EditorConfig
 
 ```bash
 # Restore editorconfig
 cp ./.editorconfig ~
 ```
 
-Restore helpers:
+#### Shell helpers
 
 ```bash
 cp ./.vim_helpers.sh ~
