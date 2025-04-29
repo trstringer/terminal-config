@@ -195,7 +195,12 @@ require('lazy').setup({
         "folke/tokyonight.nvim",
         lazy = false,
         priority = 1000,
-        opts = {},
+        opts = {
+            on_colors = function(colors)
+                -- colors.border = "#9ece6a"
+                colors.border = "#565f89"
+            end
+        },
     },
 
     { -- Collection of various small independent plugins/modules
